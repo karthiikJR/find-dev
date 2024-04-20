@@ -12,8 +12,9 @@ import {
 import { Room } from "@/db/schema";
 import { GithubIcon } from "lucide-react";
 import { getRooms } from "./data-access/room";
-import TagsList, { tagSplit } from "@/components/tags-list";
+import TagsList from "@/components/tags-list";
 import { SearchBar } from "./search-bar";
+import { tagSplit } from "@/lib/utils";
 
 function RoomCard({ room }: { room: Room }) {
 	return (
