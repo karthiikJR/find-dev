@@ -1,24 +1,27 @@
 "use client";
 
-import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { Room } from "@/db/schema";
 import {
 	Call,
 	CallControls,
+	CallParticipantsList,
 	SpeakerLayout,
 	StreamCall,
 	StreamTheme,
 	StreamVideo,
 	StreamVideoClient,
 } from "@stream-io/video-react-sdk";
+import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { generateTokenAction } from "./action";
+import { useRouter } from "next/navigation";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API!;
 
 export function DevFinderVideo({ room }: { room: Room }) {
 	const session = useSession();
+	const router = useRouter();
 
 	const [client, setClient] = useState<StreamVideoClient | null>(null);
 	const [call, setCall] = useState<Call | null>(null);
@@ -29,7 +32,11 @@ export function DevFinderVideo({ room }: { room: Room }) {
 		const userId = session.data.user.id;
 		const client = new StreamVideoClient({
 			apiKey,
-			user: { id: userId },
+			user: {
+				id: userId,
+				name: session.data.user.name ?? undefined,
+				image: session.data.user.image ?? undefined,
+			},
 			tokenProvider: () => generateTokenAction(session.data.user.id),
 		});
 		setClient(client);
@@ -38,8 +45,10 @@ export function DevFinderVideo({ room }: { room: Room }) {
 		setCall(call);
 
 		return () => {
-			call.leave();
-			client.disconnectUser();
+			call
+				.leave()
+				.then(() => client.disconnectUser())
+				.catch(console.error);
 		};
 	}, [session, room]);
 	return (
@@ -49,7 +58,12 @@ export function DevFinderVideo({ room }: { room: Room }) {
 				<StreamTheme>
 					<StreamCall call={call}>
 						<SpeakerLayout />
-						<CallControls />
+						<CallControls
+							onLeave={() => {
+								router.push("/");
+							}}
+						/>
+						<CallParticipantsList onClose={() => undefined} />
 					</StreamCall>
 				</StreamTheme>
 			</StreamVideo>

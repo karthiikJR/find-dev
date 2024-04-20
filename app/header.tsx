@@ -32,11 +32,18 @@ function AccountDropdown() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				{session.data ? (
-					<DropdownMenuItem onClick={() => signOut()}>
+				{session.data && (
+					<DropdownMenuItem
+						onClick={() =>
+							signOut({
+								callbackUrl: "/",
+							})
+						}
+					>
 						<LogOutIcon className="mr-2" /> Sign Out
 					</DropdownMenuItem>
-				) : (
+				)}
+				{!session.data && (
 					<DropdownMenuItem onClick={() => signIn("google")}>
 						<LogInIcon className="mr-2" />
 						Sign In
