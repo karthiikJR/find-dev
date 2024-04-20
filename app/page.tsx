@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/card";
 import { Room } from "@/db/schema";
 import { GithubIcon } from "lucide-react";
-import { getRooms } from "./room";
+import { getRooms } from "./data-access/room";
+import TagsList, { tagSplit } from "@/components/tags-list";
 
 function RoomCard({ room }: { room: Room }) {
 	return (
@@ -20,7 +21,8 @@ function RoomCard({ room }: { room: Room }) {
 				<CardTitle>{room.name}</CardTitle>
 				<CardDescription>{room.description}</CardDescription>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="flex flex-col gap-2">
+				<TagsList tags={tagSplit(room.tags)} />
 				{room.githubRepo && (
 					<Link
 						className="flex items-center gap-2"
