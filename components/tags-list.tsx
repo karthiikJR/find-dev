@@ -10,7 +10,7 @@ export default function TagsList({ tags }: { tags: string[] }) {
 		<div className="flex flex-wrap gap-3">
 			{tags.map((tag) => (
 				<button
-					className={cn(badgeVariants())}
+					className={cn(badgeVariants({ variant: "outline" }))}
 					key={tag}
 					onClick={() => {
 						router.push(`/browse?search=${tag}`);

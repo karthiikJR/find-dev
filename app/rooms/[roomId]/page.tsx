@@ -5,8 +5,10 @@ import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import { DevFinderVideo } from "./video-player";
 import { tagSplit } from "@/lib/utils";
+import { unstable_noStore } from "next/cache";
 
 export default async function RoomPage(props: { params: { roomId: string } }) {
+	unstable_noStore();
 	const roomId = props.params.roomId;
 	const room = await getRoom(roomId);
 
@@ -38,8 +40,8 @@ export default async function RoomPage(props: { params: { roomId: string } }) {
 						</Button>
 					)}
 					<p className="text-sm text-slate-500">{room.description}</p>
-					
-						<TagsList tags={tagSplit(room.tags)} />
+
+					<TagsList tags={tagSplit(room.tags)} />
 				</div>
 			</div>
 		</div>

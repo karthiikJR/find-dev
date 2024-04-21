@@ -1,69 +1,31 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { Room } from "@/db/schema";
-import { GithubIcon } from "lucide-react";
-import { getRooms } from "./data-access/room";
-import TagsList from "@/components/tags-list";
-import { SearchBar } from "./search-bar";
-import { tagSplit } from "@/lib/utils";
 
-function RoomCard({ room }: { room: Room }) {
+export default function LandingPage() {
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{room.name}</CardTitle>
-				<CardDescription>{room.description}</CardDescription>
-			</CardHeader>
-			<CardContent className="flex flex-col gap-2">
-				<TagsList tags={tagSplit(room.tags)} />
-				{room.githubRepo && (
-					<Link
-						className="flex items-center gap-2"
-						href={room.githubRepo}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<GithubIcon />
-						Github Project
-					</Link>
-				)}
-			</CardContent>
-			<CardFooter>
-				<Button asChild>
-					<Link href={`/rooms/${room.id}`}>Join Room</Link>
-				</Button>
-			</CardFooter>
-		</Card>
-	);
-}
+		<section className="dark:bg-gray-900 bg-sky-200 text-white">
+			<div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+				<div className="mx-auto max-w-3xl text-center">
+					<h1 className="bg-gradient-to-r dark:from-green-300 from-green-700 via-blue-500 dark:to-purple-600 to-purple-900 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+						Find other awesome developers
+						<span className="sm:block"> To Pair with online. </span>
+					</h1>
 
-export default async function Home({searchParams}: {searchParams: {search: string}}) {
-	const rooms = await getRooms(searchParams.search);
-	return (
-		<main className="min-h-screen p-16">
-			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-4xl font-medium">Find Dev Rooms!</h1>
-				<Button asChild>
-					<Link href="/create-room">Create Room</Link>
-				</Button>
+					<p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed dark:text-white text-black">
+						This platform is designed to help developers find other developers
+						to pair with online so that you can work together.
+					</p>
+
+					<div className="mt-8 flex flex-wrap justify-center gap-4">
+						<Link
+							className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent dark:hover:text-white hover:text-black  focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+							href="/browse"
+						>
+							Get Started
+						</Link>
+					</div>
+				</div>
 			</div>
-			<div className="w-full mb-12 flex justify-center">
-				<SearchBar />
-			</div>
-			<div className="max-w-4xl flex flex-col gap-4 mx-auto">
-				{rooms.map((room) => (
-					<RoomCard key={room.id} room={room}></RoomCard>
-				))}
-			</div>
-		</main>
+		</section>
 	);
 }
