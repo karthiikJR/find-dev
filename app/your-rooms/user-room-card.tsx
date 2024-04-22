@@ -26,7 +26,7 @@ import {
 
 import { Room } from "@/db/schema";
 import { tagSplit } from "@/lib/utils";
-import { GithubIcon, TrashIcon } from "lucide-react";
+import { GithubIcon, PencilIcon, TrashIcon } from "lucide-react";
 import { deleteRoomAction } from "./action";
 
 export function UserRoomCard({ room }: { room: Room }) {
@@ -55,32 +55,39 @@ export function UserRoomCard({ room }: { room: Room }) {
 					<Button asChild>
 						<Link href={`/rooms/${room.id}`}>Join Room</Link>
 					</Button>
-					<AlertDialog>
-						<AlertDialogTrigger asChild>
-							<Button variant={"destructive"}>
-								<TrashIcon className="w-4 h-4" />
-							</Button>
-						</AlertDialogTrigger>
-						<AlertDialogContent>
-							<AlertDialogHeader>
-								<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-								<AlertDialogDescription>
-									This action cannot be undone. This will permanently remove the
-									room and the data associated with it.
-								</AlertDialogDescription>
-							</AlertDialogHeader>
-							<AlertDialogFooter>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
-								<AlertDialogAction
-									onClick={() => {
-										deleteRoomAction(room.id);
-									}}
-								>
-									Yes, delete
-								</AlertDialogAction>
-							</AlertDialogFooter>
-						</AlertDialogContent>
-					</AlertDialog>
+					<div className="flex gap-2">
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Button variant={"destructive"}>
+									<TrashIcon className="w-4 h-4" />
+								</Button>
+							</AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+									<AlertDialogDescription>
+										This action cannot be undone. This will permanently remove
+										the room and the data associated with it.
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel>Cancel</AlertDialogCancel>
+									<AlertDialogAction
+										onClick={() => {
+											deleteRoomAction(room.id);
+										}}
+									>
+										Yes, delete
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
+						<Button asChild variant={"secondary"}>
+							<Link href={`/edit-room/${room.id}`}>
+								<PencilIcon className="w-4 h-4" />
+							</Link>
+						</Button>
+					</div>
 				</div>
 			</CardFooter>
 		</Card>
